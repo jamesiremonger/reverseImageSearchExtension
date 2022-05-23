@@ -1,0 +1,22 @@
+{
+  "google": {
+    "id": "GOOGLE_SEARCH",
+    "url_front": "https://www.google.com/searchbyimage?&image_url=",
+    "name": "Google"
+  },
+  "bing": {
+    "id": "BING_SEARCH",
+    "url_front": "https://www.bing.com/visualsearch/Microsoft/SimilarImages?&imgurl=",
+    "name": "Bing"
+  },
+  "tineye": {
+    "id": "TINEYE_SEARCH",
+    "url_front": "https://www.tineye.com/search/?&url=",
+    "name": "TinEye"
+  },
+  "yandex": {
+    "id": "YANDEX_SEARCH",
+    "url_front": "https://yandex.com/images/search?rpt=imageview&url=",
+    "name": "Yandex"
+  }
+}

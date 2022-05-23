@@ -1,0 +1,16 @@
+{
+  "name": "Reverse Image Search",
+  "description": "Performs a reverse image search on the chosen platform",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": [
+    "contextMenus",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "imageSearchScript.js"
+  },
+  "options_ui": {
+    "page": "options.html"
+  }
+}
