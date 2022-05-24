@@ -1,4 +1,4 @@
-const engines = {
+const engineData = {
   "google": {
     "id": "google",
     "url_front": "https://www.google.com/searchbyimage?&image_url=",
@@ -25,9 +25,10 @@ const engines = {
   }
 }
 
+
 function imageSearch(info, tab) {
   if (info.menuItemId === "all") {
-    for (const [key, search_engine] of Object.entries(engines)){
+    for (const [key, search_engine] of Object.entries(engineData)){
       if (!search_engine.url_front) {
         continue
       }
@@ -37,24 +38,42 @@ function imageSearch(info, tab) {
     }
   } else {
     chrome.tabs.create({
-      url: engines[info.menuItemId].url_front + encodeURIComponent(info.srcUrl)
+      url: engineData[info.menuItemId].url_front + encodeURIComponent(info.srcUrl)
     });
   }
 }
 
-function createContextMenu(search_engine) {
+function updateContextMenus(engines){
+  chrome.contextMenus.removeAll();
+  chrome.storage.local.get("isContextMenuVisibleArr", function(result){
+    if (!result.isContextMenuVisibleArr) {
+      createContextMenus(engines);
+      return;
+    };
+    for (const [key, engine] of Object.entries(engines)){
+      if (!result.isContextMenuVisibleArr[engine.id]){
+        continue;
+      }
+      createContextMenu(engine)
+    }
+  })
+}
+
+function createContextMenus(engines) {
+  for (const [key, engine] of Object.entries(engines)){
+    createContextMenu(engine)
+  }
+}
+
+function createContextMenu(engine) {
   chrome.contextMenus.create({
-    title: "Search image with " + search_engine.name,
-    id: search_engine.id,
+    title: "Search image with " + engine.name,
+    id: engine.id,
     contexts: ["image"]
   });
 }
 
 
-chrome.runtime.onInstalled.addListener(function() {
-  for (const [key, search_engine] of Object.entries(engines)){
-    createContextMenu(search_engine)
-  }
-})
-
+chrome.runtime.onInstalled.addListener(() => createContextMenus(engineData))
+chrome.storage.onChanged.addListener(() => updateContextMenus(engineData))
 chrome.contextMenus.onClicked.addListener(imageSearch)
